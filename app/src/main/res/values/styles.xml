@@ -5,8 +5,4 @@
         <item name="colorPrimaryDark">#FF018786</item>
         <item name="colorAccent">#FF03DAC5</item>
     </style>
-
-    <style name="ToolbarTheme">
-        <item name="android:textColorSecondary">@android:color/white</item>
-    </style>
 </resources>

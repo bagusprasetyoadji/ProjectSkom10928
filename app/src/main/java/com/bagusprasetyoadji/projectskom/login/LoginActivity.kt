@@ -20,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         auth = FirebaseAuth.getInstance()
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
