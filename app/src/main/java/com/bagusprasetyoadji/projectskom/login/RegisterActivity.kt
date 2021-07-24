@@ -20,6 +20,8 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         auth = FirebaseAuth.getInstance()
 
         binding.btnSignUp.setOnClickListener {
