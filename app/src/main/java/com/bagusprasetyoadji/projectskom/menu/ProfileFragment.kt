@@ -94,6 +94,16 @@ class ProfileFragment : Fragment() {
                     }
                 }
         }
+
+        binding.icUnverified.setOnClickListener {
+            user?.sendEmailVerification()?.addOnCompleteListener {
+                if (it.isSuccessful){
+                    Toast.makeText(activity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(activity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun IntentCamera(){

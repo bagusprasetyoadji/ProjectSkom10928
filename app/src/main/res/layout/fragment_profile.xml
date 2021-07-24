@@ -87,6 +87,7 @@
             <ImageView
                 android:id="@+id/icVerified"
                 android:layout_width="wrap_content"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_verified"
                 app:layout_constraintBottom_toBottomOf="@+id/etEmail"
@@ -98,6 +99,7 @@
                 android:id="@+id/icUnverified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:src="@drawable/ic_unverified"
                 app:layout_constraintBottom_toBottomOf="@+id/etEmail"
                 app:layout_constraintEnd_toEndOf="@+id/etName"
