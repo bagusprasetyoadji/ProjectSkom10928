@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.bagusprasetyoadji.projectskom.R
 import com.bagusprasetyoadji.projectskom.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -103,6 +104,11 @@ class ProfileFragment : Fragment() {
                     Toast.makeText(activity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        binding.etEmail.setOnClickListener {
+            val actionUpdateEmail = ProfileFragmentDirections.actionUpdateEmail()
+            Navigation.findNavController(it).navigate(actionUpdateEmail)
         }
     }
 

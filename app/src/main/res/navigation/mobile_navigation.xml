@@ -14,5 +14,17 @@
         android:id="@+id/nav_profile"
         android:name="com.bagusprasetyoadji.projectskom.menu.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/actionUpdateEmail"
+            app:destination="@id/updateEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateEmailFragment"
+        android:name="com.bagusprasetyoadji.projectskom.login.UpdateEmailFragment"
+        android:label="UpdateEmailFragment" >
+        <action
+            android:id="@+id/actionEmailUpdated"
+            app:destination="@id/nav_profile" />
+    </fragment>
 </navigation>

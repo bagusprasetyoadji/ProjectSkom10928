@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -58,6 +59,9 @@ dependencies {
 
     //Picasoo Untuk menampilkan Gambar
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Update Email
+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
