@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeToRefresh"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivProfile"
@@ -92,22 +86,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvChangePassword" />
 
                 <ImageView
-                    android:id="@+id/icVerified"
-                    android:layout_width="wrap_content"
-                    android:visibility="invisible"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_verified"
-                    app:layout_constraintBottom_toBottomOf="@+id/etEmail"
-                    app:layout_constraintEnd_toEndOf="@+id/etName"
-                    app:layout_constraintStart_toEndOf="@+id/etEmail"
-                    app:layout_constraintTop_toTopOf="@+id/etEmail" />
-
-                <ImageView
-                    android:id="@+id/icUnverified"
+                    android:id="@+id/icVerifikasi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_unverified"
+                    android:src="@drawable/ic_verifikasi"
                     app:layout_constraintBottom_toBottomOf="@+id/etEmail"
                     app:layout_constraintEnd_toEndOf="@+id/etName"
                     app:layout_constraintStart_toEndOf="@+id/etEmail"
@@ -128,7 +110,4 @@
 
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

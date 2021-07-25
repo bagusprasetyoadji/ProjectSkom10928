@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bagusprasetyoadji.projectskom.databinding.ActivityRegisterBinding
 import com.bagusprasetyoadji.projectskom.home.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -47,8 +48,9 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnRegister.setOnClickListener {
-            Intent(this@RegisterActivity,LoginActivity::class.java).also {
-                startActivity(it)
+            Intent(this@RegisterActivity,LoginActivity::class.java).also { intent ->
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
         }
     }
@@ -57,22 +59,17 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
-                    Intent(this@RegisterActivity,HomeActivity::class.java).also {
-                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(it)
+                    val user = auth.currentUser
+                    user?.sendEmailVerification()?.addOnCompleteListener {
+                        if (it.isSuccessful){
+                            Toast.makeText(this@RegisterActivity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(this@RegisterActivity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }else{
                     Toast.makeText(this,it.exception?.message,Toast.LENGTH_SHORT).show()
                 }
             }
-    }
-    override fun onStart() {
-        super.onStart()
-        if(auth.currentUser != null){
-            Intent(this@RegisterActivity,HomeActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
-            }
-        }
     }
 }

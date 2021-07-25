@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bagusprasetyoadji.projectskom.databinding.ActivityLoginBinding
 import com.bagusprasetyoadji.projectskom.home.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +23,8 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -55,16 +58,24 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(it)
             }
         }
+
+        binding.btnVerifikasiUlang.setOnClickListener {
+            user?.sendEmailVerification()?.addOnCompleteListener {
+                if (it.isSuccessful){
+                    Toast.makeText(this@LoginActivity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@LoginActivity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
-                    Intent(this@LoginActivity,HomeActivity::class.java).also { intent ->
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                    }
+                    val user = auth.currentUser
+                    updateUI(user)
                 }else{
                     Toast.makeText(this,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
                 }
@@ -73,11 +84,26 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(auth.currentUser != null){
-            Intent(this@LoginActivity,HomeActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
+        val curentUser = auth.currentUser
+        updateUI(curentUser)
+    }
+
+    private fun updateUI(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            if(currentUser.isEmailVerified) {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }else{
+                Toast.makeText(
+                    baseContext, "Please verify your email address.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+        } else {
+            Toast.makeText(
+                baseContext, "Login failed.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

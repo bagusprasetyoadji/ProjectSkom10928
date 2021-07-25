@@ -12,13 +12,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bagusprasetyoadji.projectskom.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
-
 
 class ProfileFragment : Fragment() {
 
@@ -28,13 +28,6 @@ class ProfileFragment : Fragment() {
     }
     private lateinit var imageUri : Uri
     private lateinit var auth : FirebaseAuth
-//    private lateinit var swipeRefresh : SwipeRefreshLayout
-
-//    private fun refreshApp() {
-//        swipeRefresh.setOnRefreshListener {
-//            swipeRefresh.isRefreshing = false
-//        }
-//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -45,7 +38,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        refreshApp()
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
@@ -59,11 +51,6 @@ class ProfileFragment : Fragment() {
             binding.etName.setText(user.displayName)
             binding.etEmail.setText(user.email)
 
-            if (user.isEmailVerified){
-                binding.icVerified.visibility = View.VISIBLE
-            }else{
-                binding.icUnverified.visibility = View.VISIBLE
-            }
             if (user.phoneNumber.isNullOrEmpty()){
                 binding.etPhone.setText("Masukkan Nomor Telepon")
             }else{
@@ -100,7 +87,7 @@ class ProfileFragment : Fragment() {
                     }
                 }
         }
-        binding.icUnverified.setOnClickListener {
+        binding.icVerifikasi.setOnClickListener {
             user?.sendEmailVerification()?.addOnCompleteListener {
                 if (it.isSuccessful){
                     Toast.makeText(activity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
