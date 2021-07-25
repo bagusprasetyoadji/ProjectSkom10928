@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.bagusprasetyoadji.projectskom.databinding.FragmentUpdateEmailBinding
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+
 
 class UpdateEmailFragment : Fragment() {
 
@@ -31,6 +33,8 @@ class UpdateEmailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
+
+        (context as AppCompatActivity).supportActionBar!!.title = "Ganti Email Baru"
 
         val user = auth.currentUser
         binding.layoutPassword.visibility = View.VISIBLE

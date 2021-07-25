@@ -18,6 +18,8 @@ class ResetPasswordActivity : AppCompatActivity() {
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setTitle("Reset Password")
+
         binding.btnResetPassword.setOnClickListener {
             val email = binding.etEmailReset.text.toString().trim()
             if (email.isEmpty()){
