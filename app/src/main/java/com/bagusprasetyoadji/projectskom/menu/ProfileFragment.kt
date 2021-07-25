@@ -6,19 +6,19 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.bagusprasetyoadji.projectskom.R
 import com.bagusprasetyoadji.projectskom.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
+
 
 class ProfileFragment : Fragment() {
 
@@ -28,11 +28,15 @@ class ProfileFragment : Fragment() {
     }
     private lateinit var imageUri : Uri
     private lateinit var auth : FirebaseAuth
+//    private lateinit var swipeRefresh : SwipeRefreshLayout
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+//    private fun refreshApp() {
+//        swipeRefresh.setOnRefreshListener {
+//            swipeRefresh.isRefreshing = false
+//        }
+//    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater,container,false)
         val view = binding.root
@@ -41,6 +45,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        refreshApp()
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
@@ -95,7 +100,6 @@ class ProfileFragment : Fragment() {
                     }
                 }
         }
-
         binding.icUnverified.setOnClickListener {
             user?.sendEmailVerification()?.addOnCompleteListener {
                 if (it.isSuccessful){
@@ -109,6 +113,11 @@ class ProfileFragment : Fragment() {
         binding.etEmail.setOnClickListener {
             val actionUpdateEmail = ProfileFragmentDirections.actionUpdateEmail()
             Navigation.findNavController(it).navigate(actionUpdateEmail)
+        }
+
+        binding.tvChangePassword.setOnClickListener {
+            val actionChangePassword = ProfileFragmentDirections.actionChangePassword()
+            Navigation.findNavController(it).navigate(actionChangePassword)
         }
     }
 

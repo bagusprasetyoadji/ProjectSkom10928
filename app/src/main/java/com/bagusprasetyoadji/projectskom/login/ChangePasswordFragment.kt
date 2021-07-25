@@ -1,30 +1,26 @@
 package com.bagusprasetyoadji.projectskom.login
 
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.bagusprasetyoadji.projectskom.databinding.FragmentUpdateEmailBinding
+import com.bagusprasetyoadji.projectskom.databinding.FragmentChangePasswordBinding
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
-class UpdateEmailFragment : Fragment() {
+class ChangePasswordFragment : Fragment() {
 
-    private lateinit var binding : FragmentUpdateEmailBinding
+    private lateinit var binding : FragmentChangePasswordBinding
     private lateinit var auth : FirebaseAuth
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = FragmentUpdateEmailBinding.inflate(inflater,container,false)
-        val view  = binding.root
+        binding = FragmentChangePasswordBinding.inflate(layoutInflater)
+        val view = binding.root
         return view
     }
 
@@ -53,31 +49,32 @@ class UpdateEmailFragment : Fragment() {
                         binding.etPassword.error = "Password Salah"
                         binding.etPassword.requestFocus()
                     }else{
-                        Toast.makeText(activity,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity,"${it.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             binding.btnUpdate.setOnClickListener { view ->
-                val email = binding.etEmail.text.toString().trim()
+                val newPassword = binding.etNewPassword.text.toString().trim()
+                val newPasswordConfirm = binding.etNewPasswordConfirm.text.toString().trim()
 
-                if (email.isEmpty()){
-                    binding.etEmail.error = "Email Harus Diisi"
-                    binding.etEmail.requestFocus()
+                if (newPassword.isEmpty() || newPassword.length < 6){
+                    binding.etNewPassword.error = "Password Harus Lebih dari 6 Karakter"
+                    binding.etNewPassword.requestFocus()
                     return@setOnClickListener
                 }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    binding.etEmail.error = "Email Tidak Valid"
-                    binding.etEmail.requestFocus()
+                if (newPassword != newPasswordConfirm){
+                    binding.etNewPasswordConfirm.error = "Password Tidak Sama"
+                    binding.etNewPasswordConfirm.requestFocus()
                     return@setOnClickListener
                 }
-
                 user?.let {
-                    user.updateEmail(email).addOnCompleteListener {
+                    user.updatePassword(newPassword).addOnCompleteListener {
                         if (it.isSuccessful){
-                            val actionEmailUpdated = UpdateEmailFragmentDirections.actionEmailUpdated()
-                            Navigation.findNavController(view).navigate(actionEmailUpdated)
+                            val actionPasswordChange = ChangePasswordFragmentDirections.actionPasswordChange()
+                            Navigation.findNavController(view).navigate(actionPasswordChange)
+                            Toast.makeText(activity,"Password Berhasil diganti",Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(activity,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity,"${it.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

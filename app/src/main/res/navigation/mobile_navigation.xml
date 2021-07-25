@@ -18,6 +18,9 @@
         <action
             android:id="@+id/actionUpdateEmail"
             app:destination="@id/updateEmailFragment" />
+        <action
+            android:id="@+id/actionChangePassword"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateEmailFragment"
@@ -25,6 +28,18 @@
         android:label="UpdateEmailFragment" >
         <action
             android:id="@+id/actionEmailUpdated"
-            app:destination="@id/nav_profile" />
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/nav_profile"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.bagusprasetyoadji.projectskom.login.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/actionPasswordChange"
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/nav_profile"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

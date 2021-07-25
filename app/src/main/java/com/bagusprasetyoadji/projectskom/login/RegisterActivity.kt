@@ -1,11 +1,10 @@
 package com.bagusprasetyoadji.projectskom.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import com.bagusprasetyoadji.projectskom.R
+import androidx.appcompat.app.AppCompatActivity
 import com.bagusprasetyoadji.projectskom.databinding.ActivityRegisterBinding
 import com.bagusprasetyoadji.projectskom.home.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
