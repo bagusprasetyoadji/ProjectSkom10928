@@ -95,15 +95,10 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }else{
                 Toast.makeText(
-                    baseContext, "Please verify your email address.",
+                    baseContext, "Please verify your email address",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        } else {
-            Toast.makeText(
-                baseContext, "Login failed.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 }
