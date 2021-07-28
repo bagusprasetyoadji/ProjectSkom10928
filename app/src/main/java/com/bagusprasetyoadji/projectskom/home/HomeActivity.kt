@@ -33,7 +33,6 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController,appBarConfiguration)
 
         binding.navBottom.setupWithNavController(navController)
-
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
