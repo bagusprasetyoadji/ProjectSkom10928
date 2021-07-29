@@ -17,16 +17,16 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 class UpdateEmailFragment : Fragment() {
 
-    private lateinit var binding : FragmentUpdateEmailBinding
-    private lateinit var auth : FirebaseAuth
+    private lateinit var binding: FragmentUpdateEmailBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentUpdateEmailBinding.inflate(inflater,container,false)
-        val view  = binding.root
+        binding = FragmentUpdateEmailBinding.inflate(inflater, container, false)
+        val view = binding.root
         return view
     }
 
@@ -42,7 +42,7 @@ class UpdateEmailFragment : Fragment() {
 
         binding.btnAuth.setOnClickListener {
             val password = binding.etPassword.text.toString().trim()
-            if (password.isEmpty()){
+            if (password.isEmpty()) {
                 binding.etPassword.error = "Password Harus diisi"
                 binding.etPassword.requestFocus()
                 return@setOnClickListener
@@ -50,26 +50,27 @@ class UpdateEmailFragment : Fragment() {
             user?.let {
                 val userCredential = EmailAuthProvider.getCredential(it.email!!, password)
                 it.reauthenticate(userCredential).addOnCompleteListener {
-                    if (it.isSuccessful){
+                    if (it.isSuccessful) {
                         binding.layoutPassword.visibility = View.GONE
                         binding.layoutEmail.visibility = View.VISIBLE
-                    }else if (it.exception is FirebaseAuthInvalidCredentialsException){
+                    } else if (it.exception is FirebaseAuthInvalidCredentialsException) {
                         binding.etPassword.error = "Password Salah"
                         binding.etPassword.requestFocus()
-                    }else{
-                        Toast.makeText(activity,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
             binding.btnUpdate.setOnClickListener { view ->
                 val email = binding.etEmail.text.toString().trim()
 
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     binding.etEmail.error = "Email Harus Diisi"
                     binding.etEmail.requestFocus()
                     return@setOnClickListener
                 }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     binding.etEmail.error = "Email Tidak Valid"
                     binding.etEmail.requestFocus()
                     return@setOnClickListener
@@ -77,11 +78,13 @@ class UpdateEmailFragment : Fragment() {
 
                 user?.let {
                     user.updateEmail(email).addOnCompleteListener {
-                        if (it.isSuccessful){
-                            val actionEmailUpdated = UpdateEmailFragmentDirections.actionEmailUpdated()
+                        if (it.isSuccessful) {
+                            val actionEmailUpdated =
+                                UpdateEmailFragmentDirections.actionEmailUpdated()
                             Navigation.findNavController(view).navigate(actionEmailUpdated)
-                        }else{
-                            Toast.makeText(activity,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

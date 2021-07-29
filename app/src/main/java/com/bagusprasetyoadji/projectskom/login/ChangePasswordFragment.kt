@@ -15,10 +15,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 class ChangePasswordFragment : Fragment() {
 
-    private lateinit var binding : FragmentChangePasswordBinding
-    private lateinit var auth : FirebaseAuth
+    private lateinit var binding: FragmentChangePasswordBinding
+    private lateinit var auth: FirebaseAuth
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         binding = FragmentChangePasswordBinding.inflate(layoutInflater)
         val view = binding.root
@@ -37,7 +41,7 @@ class ChangePasswordFragment : Fragment() {
 
         binding.btnAuth.setOnClickListener {
             val password = binding.etPassword.text.toString().trim()
-            if (password.isEmpty()){
+            if (password.isEmpty()) {
                 binding.etPassword.error = "Password Harus diisi"
                 binding.etPassword.requestFocus()
                 return@setOnClickListener
@@ -45,14 +49,15 @@ class ChangePasswordFragment : Fragment() {
             user?.let {
                 val userCredential = EmailAuthProvider.getCredential(it.email!!, password)
                 it.reauthenticate(userCredential).addOnCompleteListener {
-                    if (it.isSuccessful){
+                    if (it.isSuccessful) {
                         binding.layoutPassword.visibility = View.GONE
                         binding.layoutEmail.visibility = View.VISIBLE
-                    }else if (it.exception is FirebaseAuthInvalidCredentialsException){
+                    } else if (it.exception is FirebaseAuthInvalidCredentialsException) {
                         binding.etPassword.error = "Password Salah"
                         binding.etPassword.requestFocus()
-                    }else{
-                        Toast.makeText(activity,"${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -60,24 +65,30 @@ class ChangePasswordFragment : Fragment() {
                 val newPassword = binding.etNewPassword.text.toString().trim()
                 val newPasswordConfirm = binding.etNewPasswordConfirm.text.toString().trim()
 
-                if (newPassword.isEmpty() || newPassword.length < 6){
+                if (newPassword.isEmpty() || newPassword.length < 6) {
                     binding.etNewPassword.error = "Password Harus Lebih dari 6 Karakter"
                     binding.etNewPassword.requestFocus()
                     return@setOnClickListener
                 }
-                if (newPassword != newPasswordConfirm){
+                if (newPassword != newPasswordConfirm) {
                     binding.etNewPasswordConfirm.error = "Password Tidak Sama"
                     binding.etNewPasswordConfirm.requestFocus()
                     return@setOnClickListener
                 }
                 user?.let {
                     user.updatePassword(newPassword).addOnCompleteListener {
-                        if (it.isSuccessful){
-                            val actionPasswordChange = ChangePasswordFragmentDirections.actionPasswordChange()
+                        if (it.isSuccessful) {
+                            val actionPasswordChange =
+                                ChangePasswordFragmentDirections.actionPasswordChange()
                             Navigation.findNavController(view).navigate(actionPasswordChange)
-                            Toast.makeText(activity,"Password Berhasil diganti",Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(activity,"${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                activity,
+                                "Password Berhasil diganti",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

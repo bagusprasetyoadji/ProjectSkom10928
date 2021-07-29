@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bagusprasetyoadji.projectskom.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -22,18 +21,24 @@ import java.io.ByteArrayOutputStream
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var binding : FragmentProfileBinding
+    private lateinit var binding: FragmentProfileBinding
+
     companion object {
         const val REQUEST_CAMERA = 100
     }
-    private lateinit var imageUri : Uri
-    private lateinit var auth : FirebaseAuth
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var imageUri: Uri
+    private lateinit var auth: FirebaseAuth
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentProfileBinding.inflate(inflater,container,false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
-        return  view
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,18 +47,18 @@ class ProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 
-        if(user != null){
-            if (user.photoUrl != null){
+        if (user != null) {
+            if (user.photoUrl != null) {
                 Picasso.get().load(user.photoUrl).into(binding.ivProfile)
-            }else{
+            } else {
                 Picasso.get().load("https://picsum.photos/200/300.jpg").into(binding.ivProfile)
             }
             binding.etName.setText(user.displayName)
             binding.etEmail.setText(user.email)
 
-            if (user.phoneNumber.isNullOrEmpty()){
+            if (user.phoneNumber.isNullOrEmpty()) {
                 binding.etPhone.setText("Masukkan Nomor Telepon")
-            }else{
+            } else {
                 binding.etPhone.setText(user.phoneNumber)
             }
         }
@@ -69,7 +74,7 @@ class ProfileFragment : Fragment() {
                 else -> user.photoUrl
             }
             val name = binding.etName.text.toString().trim()
-            if(name.isEmpty()){
+            if (name.isEmpty()) {
                 binding.etName.error = "Nama harus diisi"
                 binding.etName.requestFocus()
                 return@setOnClickListener
@@ -79,20 +84,22 @@ class ProfileFragment : Fragment() {
                 .setPhotoUri(image)
                 .build().also {
                     user?.updateProfile(it)?.addOnCompleteListener {
-                        if (it.isSuccessful){
-                            Toast.makeText(activity,"Profile Updated",Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(activity,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                        if (it.isSuccessful) {
+                            Toast.makeText(activity, "Profile Updated", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
         }
         binding.icVerifikasi.setOnClickListener {
             user?.sendEmailVerification()?.addOnCompleteListener {
-                if (it.isSuccessful){
-                    Toast.makeText(activity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(activity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                if (it.isSuccessful) {
+                    Toast.makeText(activity, "Email verifikasi telah dikirim", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(activity, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -108,7 +115,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun IntentCamera(){
+    private fun IntentCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
             activity?.packageManager?.let {
                 intent.resolveActivity(it).also {
@@ -120,7 +127,7 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_CAMERA && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             uploadImage(imgBitmap)
         }
@@ -128,14 +135,15 @@ class ProfileFragment : Fragment() {
 
     private fun uploadImage(imgBitmap: Bitmap) {
         val baos = ByteArrayOutputStream()
-        val ref = FirebaseStorage.getInstance().reference.child("img/${FirebaseAuth.getInstance().currentUser?.uid}")
+        val ref =
+            FirebaseStorage.getInstance().reference.child("img/${FirebaseAuth.getInstance().currentUser?.uid}")
 
-        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100,baos)
-        val  image = baos.toByteArray()
+        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val image = baos.toByteArray()
 
         ref.putBytes(image)
-            .addOnCompleteListener{
-                if(it.isSuccessful){
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
                     ref.downloadUrl.addOnCompleteListener {
                         it.result?.let {
                             imageUri = it

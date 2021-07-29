@@ -11,10 +11,15 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
+        android:id="@+id/nav_data"
+        android:name="com.bagusprasetyoadji.projectskom.data.DataFragment"
+        android:label="fragment_data"
+        tools:layout="@layout/fragment_data" />
+    <fragment
         android:id="@+id/nav_profile"
         android:name="com.bagusprasetyoadji.projectskom.menu.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/actionUpdateEmail"
             app:destination="@id/updateEmailFragment" />

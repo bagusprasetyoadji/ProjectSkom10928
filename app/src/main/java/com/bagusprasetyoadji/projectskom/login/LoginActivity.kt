@@ -12,8 +12,8 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLoginBinding
-    private lateinit var auth : FirebaseAuth
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +29,17 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (email.isEmpty()){
+            if (email.isEmpty()) {
                 binding.etEmail.error = "Email Harus Diisi"
                 binding.etEmail.requestFocus()
                 return@setOnClickListener
             }
-            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 binding.etEmail.error = "Email Tidak Valid"
                 binding.etEmail.requestFocus()
                 return@setOnClickListener
             }
-            if (password.isEmpty() || password.length < 0 ){
+            if (password.isEmpty() || password.length < 0) {
                 binding.etPassword.error = "Password Harus Lebih dari 6 Karakter"
                 binding.etPassword.requestFocus()
                 return@setOnClickListener
@@ -48,23 +48,31 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnRegister.setOnClickListener {
-            Intent(this@LoginActivity,RegisterActivity::class.java).also {
+            Intent(this@LoginActivity, RegisterActivity::class.java).also {
                 startActivity(it)
             }
         }
 
         binding.btnForgotPassword.setOnClickListener {
-            Intent(this@LoginActivity,ResetPasswordActivity::class.java).also {
+            Intent(this@LoginActivity, ResetPasswordActivity::class.java).also {
                 startActivity(it)
             }
         }
 
         binding.btnVerifikasiUlang.setOnClickListener {
             user?.sendEmailVerification()?.addOnCompleteListener {
-                if (it.isSuccessful){
-                    Toast.makeText(this@LoginActivity, "Email verifikasi telah dikirim",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(this@LoginActivity, "${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                if (it.isSuccessful) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Email verifikasi telah dikirim",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "${it.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -72,12 +80,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){
-                if(it.isSuccessful){
+            .addOnCompleteListener(this) {
+                if (it.isSuccessful) {
                     val user = auth.currentUser
                     updateUI(user)
-                }else{
-                    Toast.makeText(this,"${it.exception?.message}",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -90,10 +98,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
-            if(currentUser.isEmailVerified) {
+            if (currentUser.isEmailVerified) {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()
-            }else{
+            } else {
                 Toast.makeText(
                     baseContext, "Please verify your email address",
                     Toast.LENGTH_SHORT
