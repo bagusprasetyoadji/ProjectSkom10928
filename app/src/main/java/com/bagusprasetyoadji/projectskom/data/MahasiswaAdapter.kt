@@ -70,6 +70,16 @@ class MahasiswaAdapter(val mCtx: Context, val layoutResId: Int, val mhsList: Lis
         builder.setNegativeButton("No") { p0, p1 ->
 
         }
+        builder.setNeutralButton("Delete") { p0, p1 ->
+            val dbMhs = FirebaseDatabase.getInstance().getReference("mahasiswa").child(mahasiswa.id)
+            val dbMatkul =
+                FirebaseDatabase.getInstance().getReference("mata_kuliah").child(mahasiswa.id)
+
+            dbMhs.removeValue()
+            dbMatkul.removeValue()
+
+            Toast.makeText(mCtx, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
+        }
         val alert = builder.create()
         alert.show()
     }
