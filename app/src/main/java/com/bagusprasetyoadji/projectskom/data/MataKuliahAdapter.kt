@@ -18,7 +18,6 @@ class MataKuliahAdapter(val mCtx: Context, val layoutResId: Int, val matkulList:
 
         val matkul = matkulList[position]
         tvNamaMatkul.text = matkul.nama
-
         return view
     }
 }

@@ -25,9 +25,10 @@ class AddMataKuliahActivity : AppCompatActivity() {
 
         val id = intent.getStringExtra(EXTRA_ID)
         val nama = intent.getStringExtra(EXTRA_NAMA)
-
         matkulList = mutableListOf()
         ref = FirebaseDatabase.getInstance().getReference("mata_kuliah").child(id.toString())
+
+        saveData()
 
         binding.btnMatkul.setOnClickListener {
             saveMatkul()
@@ -51,6 +52,10 @@ class AddMataKuliahActivity : AppCompatActivity() {
                 ).show()
             }
         }
+        saveData()
+    }
+
+    private fun saveData() {
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
